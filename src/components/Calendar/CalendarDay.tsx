@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react'
-import { Box, ButtonBase, Typography, alpha, useTheme } from '@mui/material'
+import { ButtonBase, Typography, alpha, useTheme } from '@mui/material'
 import { format } from 'date-fns'
 import type { DayState } from '../../types'
 
@@ -90,8 +90,8 @@ export const CalendarDay = memo(function CalendarDay({
   }
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         position: 'relative',
         width: 36,
         height: 36,
@@ -153,6 +153,6 @@ export const CalendarDay = memo(function CalendarDay({
           {format(date, 'd')}
         </Typography>
       </ButtonBase>
-    </Box>
+    </div>
   )
 })

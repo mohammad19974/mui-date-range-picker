@@ -212,6 +212,7 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
         sx={{
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'space-between',
         }}
       >
         <Stack
