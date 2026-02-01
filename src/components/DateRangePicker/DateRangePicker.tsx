@@ -47,6 +47,7 @@ export const DateRangePicker = memo(function DateRangePicker({
   autoApply = false,
   onOpen,
   onClose,
+  mobileOptions,
   renderInput,
   renderDay: _renderDay,
   renderHeader: _renderHeader,
@@ -180,6 +181,7 @@ export const DateRangePicker = memo(function DateRangePicker({
           presets={presets}
           showActionButtons={showActionButtons}
           showTodayButton={showTodayButton}
+          showClearButton={showClearButton}
           minDate={minDate}
           maxDate={maxDate}
           disabledDates={disabledDates}
@@ -188,6 +190,7 @@ export const DateRangePicker = memo(function DateRangePicker({
           locale={locale}
           closeOnSelect={closeOnSelect}
           autoApply={autoApply}
+          mobileOptions={mobileOptions}
         />
       </Box>
     </ClickAwayListener>

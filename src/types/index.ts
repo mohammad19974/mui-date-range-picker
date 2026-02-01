@@ -22,6 +22,24 @@ export type SelectionMode = 'single' | 'range' | 'multiple' | 'week' | 'month'
 export type PickerVariant = 'popover' | 'modal' | 'inline' | 'drawer'
 
 /**
+ * Mobile-specific configuration options
+ */
+export interface MobileOptions {
+  /** Custom breakpoint for mobile detection (default: 'sm' = 600px) */
+  breakpoint?: 'xs' | 'sm' | 'md'
+  /** Force fullscreen dialog on mobile (default: true) */
+  fullScreen?: boolean
+  /** Number of presets to show on mobile (default: 6, set to 0 to show all) */
+  maxPresets?: number
+  /** Use larger touch-friendly targets (default: true) */
+  touchFriendly?: boolean
+  /** Show swipe gesture hint on mobile */
+  showSwipeHint?: boolean
+  /** Enable swipe navigation between months */
+  swipeNavigation?: boolean
+}
+
+/**
  * Input mode for the picker
  */
 export type InputMode = 'single' | 'multi'
@@ -227,6 +245,8 @@ export interface DateRangePickerProps {
   onOpen?: () => void
   /** Callback when picker closes */
   onClose?: () => void
+  /** Mobile-specific configuration */
+  mobileOptions?: MobileOptions
   /** Custom input render */
   renderInput?: (props: InputRenderProps) => React.ReactNode
   /** Custom day render */
