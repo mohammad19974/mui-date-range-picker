@@ -49,6 +49,9 @@ export const PresetList = memo(function PresetList({
     [onSelect]
   )
 
+  // Translate a label using locale preset labels
+  const t = (label: string) => locale.strings.presetLabels?.[label] || label
+
   const renderPresetItem = (preset: PresetRange, index: number) => {
     const presetRange = preset.getValue()
     const isSelected = areRangesEqual(presetRange, value)
@@ -76,7 +79,7 @@ export const PresetList = memo(function PresetList({
           }}
         >
           <ListItemText
-            primary={preset.label}
+            primary={t(preset.label)}
             primaryTypographyProps={{
               variant: 'body2',
               fontWeight: isSelected ? 600 : 400,
@@ -141,7 +144,7 @@ export const PresetList = memo(function PresetList({
                 letterSpacing: '0.5px',
               }}
             >
-              {group.label}
+              {t(group.label)}
             </Typography>
             <List disablePadding dense>
               {group.presets.map((preset, index) => renderPresetItem(preset, index))}

@@ -87,6 +87,8 @@ export interface DateRangePickerLocale {
     selectYear: string
     presets: string
     swipeHint: string
+    /** Translations for default preset labels (key = English label, value = translated label) */
+    presetLabels: Record<string, string>
     weekdays: {
       short: string[]
       long: string[]

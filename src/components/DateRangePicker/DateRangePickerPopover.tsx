@@ -378,7 +378,7 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
                       px: mobileOptions.touchFriendly ? 2 : 1.5,
                     }}
                   >
-                    {preset.label}
+                    {locale.strings.presetLabels?.[preset.label] || preset.label}
                   </Button>
                 ))}
               </Stack>
