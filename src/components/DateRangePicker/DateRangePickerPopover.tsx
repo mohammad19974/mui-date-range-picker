@@ -5,6 +5,7 @@ import {
   Button,
   Divider,
   Stack,
+  TextField,
   useTheme,
   useMediaQuery,
   Dialog,
@@ -13,7 +14,7 @@ import {
   Drawer,
   Typography,
 } from '@mui/material'
-import { addMonths } from 'date-fns'
+import { addMonths, format, parse, isValid } from 'date-fns'
 import { Calendar } from '../Calendar'
 import { PresetList, defaultPresets } from '../Presets'
 import type {
@@ -58,6 +59,10 @@ export interface DateRangePickerPopoverProps {
   showQuickJumper?: boolean
   /** Auto apply selection without requiring Apply button click */
   autoApply?: boolean
+  /** Show manual date input fields above calendars */
+  showDateInputs?: boolean
+  /** Date format for input fields (default: 'MM/dd/yyyy') */
+  dateFormat?: string
   /** Mobile-specific configuration */
   mobileOptions?: MobileOptions
 }
@@ -84,6 +89,8 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
   closeOnSelect = false,
   showQuickJumper = true,
   autoApply = false,
+  showDateInputs = false,
+  dateFormat = 'MM/dd/yyyy',
   mobileOptions: mobileOptionsProp,
 }: DateRangePickerPopoverProps) {
   const theme = useTheme()
@@ -209,6 +216,75 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
     }
   }, [autoApply, onChange])
 
+  // Date input state for manual entry
+  const [startInputValue, setStartInputValue] = useState('')
+  const [endInputValue, setEndInputValue] = useState('')
+  const [startInputError, setStartInputError] = useState(false)
+  const [endInputError, setEndInputError] = useState(false)
+
+  // Sync input values with temp selection
+  useEffect(() => {
+    const currentRange = autoApply ? value : tempValue
+    setStartInputValue(
+      currentRange.startDate ? format(currentRange.startDate, dateFormat, { locale: locale.dateFnsLocale }) : ''
+    )
+    setEndInputValue(
+      currentRange.endDate ? format(currentRange.endDate, dateFormat, { locale: locale.dateFnsLocale }) : ''
+    )
+    setStartInputError(false)
+    setEndInputError(false)
+  }, [tempValue, value, autoApply, dateFormat, locale.dateFnsLocale])
+
+  // Parse and apply a manually entered date
+  const handleDateInputCommit = useCallback(
+    (inputValue: string, field: 'start' | 'end') => {
+      if (!inputValue.trim()) {
+        // Clear the field
+        const newRange = field === 'start'
+          ? { startDate: null, endDate: tempValue.endDate }
+          : { startDate: tempValue.startDate, endDate: null }
+        setTempValue(newRange)
+        if (field === 'start') setStartInputError(false)
+        else setEndInputError(false)
+        return
+      }
+
+      const parsed = parse(inputValue, dateFormat, new Date(), { locale: locale.dateFnsLocale })
+      if (!isValid(parsed)) {
+        if (field === 'start') setStartInputError(true)
+        else setEndInputError(true)
+        return
+      }
+
+      if (field === 'start') {
+        setStartInputError(false)
+        const newRange = normalizeRange({ startDate: parsed, endDate: tempValue.endDate })
+        setTempValue(newRange)
+        setBaseMonth(parsed)
+        if (autoApply && newRange.startDate && newRange.endDate) {
+          onChange(newRange)
+        }
+      } else {
+        setEndInputError(false)
+        const newRange = normalizeRange({ startDate: tempValue.startDate, endDate: parsed })
+        setTempValue(newRange)
+        if (autoApply && newRange.startDate && newRange.endDate) {
+          onChange(newRange)
+        }
+      }
+    },
+    [tempValue, dateFormat, locale.dateFnsLocale, autoApply, onChange]
+  )
+
+  const handleDateInputKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>, field: 'start' | 'end') => {
+      if (e.key === 'Enter') {
+        handleDateInputCommit((e.target as HTMLInputElement).value, field)
+      }
+    },
+    [handleDateInputCommit]
+  )
+
   // Handle swipe gestures for mobile month navigation
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!mobileOptions.swipeNavigation || !isMobile) return
@@ -309,8 +385,70 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
               backgroundColor: 'action.hover',
             }}
           >
-            ← Swipe to change month →
+            {locale.strings.swipeHint}
           </Typography>
+        )}
+
+        {/* Manual date inputs */}
+        {showDateInputs && (
+          <>
+            <Stack
+              direction="row"
+              spacing={1.5}
+              sx={{
+                px: 2,
+                pt: 1.5,
+                pb: 1,
+                direction: locale.direction,
+              }}
+            >
+              <TextField
+                size="small"
+                label={locale.strings.startDate}
+                placeholder={dateFormat.toLowerCase()}
+                value={startInputValue}
+                onChange={(e) => {
+                  setStartInputValue(e.target.value)
+                  setStartInputError(false)
+                }}
+                onBlur={(e) => handleDateInputCommit(e.target.value, 'start')}
+                onKeyDown={(e) => handleDateInputKeyDown(e as React.KeyboardEvent<HTMLInputElement>, 'start')}
+                error={startInputError}
+                sx={{ flex: 1 }}
+                slotProps={{
+                  input: {
+                    sx: { fontSize: '0.875rem' },
+                  },
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
+              />
+              <TextField
+                size="small"
+                label={locale.strings.endDate}
+                placeholder={dateFormat.toLowerCase()}
+                value={endInputValue}
+                onChange={(e) => {
+                  setEndInputValue(e.target.value)
+                  setEndInputError(false)
+                }}
+                onBlur={(e) => handleDateInputCommit(e.target.value, 'end')}
+                onKeyDown={(e) => handleDateInputKeyDown(e as React.KeyboardEvent<HTMLInputElement>, 'end')}
+                error={endInputError}
+                sx={{ flex: 1 }}
+                slotProps={{
+                  input: {
+                    sx: { fontSize: '0.875rem' },
+                  },
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
+              />
+            </Stack>
+            <Divider />
+          </>
         )}
 
         <Stack
@@ -378,7 +516,7 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
                       px: mobileOptions.touchFriendly ? 2 : 1.5,
                     }}
                   >
-                    {preset.label}
+                    {locale.strings.presetLabels?.[preset.label] || preset.label}
                   </Button>
                 ))}
               </Stack>
@@ -386,8 +524,8 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
           </>
         )}
 
-        {/* Action buttons - only show in non-dialog mode or when not on mobile with fullscreen */}
-        {showActionButtons && !(isMobile && mobileOptions.fullScreen && (variant === 'modal' || variant === 'popover')) && (
+        {/* Action buttons - hide for drawer (has its own footer) and mobile fullscreen modal/popover */}
+        {showActionButtons && variant !== 'drawer' && !(isMobile && mobileOptions.fullScreen && (variant === 'modal' || variant === 'popover')) && (
           <>
             <Divider />
             <Box

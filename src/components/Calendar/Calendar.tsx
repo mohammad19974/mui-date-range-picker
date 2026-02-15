@@ -271,6 +271,7 @@ export const Calendar = memo(function Calendar({
                   onClick={handleDateClick}
                   onMouseEnter={handleDateHover}
                   size={daySize}
+                  isRtl={isRtl}
                 />
               )
             })}

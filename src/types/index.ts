@@ -81,6 +81,14 @@ export interface DateRangePickerLocale {
     clear: string
     apply: string
     cancel: string
+    previousMonth: string
+    nextMonth: string
+    selectMonth: string
+    selectYear: string
+    presets: string
+    swipeHint: string
+    /** Translations for default preset labels (key = English label, value = translated label) */
+    presetLabels: Record<string, string>
     weekdays: {
       short: string[]
       long: string[]
@@ -239,6 +247,10 @@ export interface DateRangePickerProps {
   showClearButton?: boolean
   /** Show action buttons (Apply/Cancel) */
   showActionButtons?: boolean
+  /** Show month/year quick jumper dropdowns in calendar header */
+  showQuickJumper?: boolean
+  /** Show manual date input fields above calendars */
+  showDateInputs?: boolean
   /** Auto apply selection without requiring Apply button click */
   autoApply?: boolean
   /** Callback when picker opens */
