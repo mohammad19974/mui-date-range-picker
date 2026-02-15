@@ -342,3 +342,89 @@ export const WithoutClearButton: Story = {
 export const SmallSize: Story = {
   render: () => <DateRangePicker label="Small Size" locale={enUSLocale} />,
 }
+
+// With date inputs
+export const WithDateInputs: Story = {
+  args: {
+    label: 'With Manual Date Inputs',
+    showDateInputs: true,
+    dateFormat: 'MM/dd/yyyy',
+    locale: enUSLocale,
+  },
+}
+
+// With date inputs + single calendar
+export const WithDateInputsSingleCalendar: Story = {
+  args: {
+    label: 'Date Inputs (Single Calendar)',
+    showDateInputs: true,
+    calendars: 1,
+    dateFormat: 'MM/dd/yyyy',
+    locale: enUSLocale,
+  },
+}
+
+// With date inputs + auto apply
+const WithDateInputsAutoApplyExample = () => {
+  const [value, setValue] = useState<DateRange>({ startDate: null, endDate: null })
+
+  return (
+    <Stack spacing={2}>
+      <DateRangePicker
+        value={value}
+        onChange={setValue}
+        label="Date Inputs + Auto Apply"
+        showDateInputs={true}
+        autoApply={true}
+        dateFormat="MM/dd/yyyy"
+        locale={enUSLocale}
+      />
+      <Typography variant="body2">
+        Selected: {value.startDate?.toLocaleDateString()} - {value.endDate?.toLocaleDateString()}
+      </Typography>
+    </Stack>
+  )
+}
+
+export const WithDateInputsAutoApply: Story = {
+  render: () => <WithDateInputsAutoApplyExample />,
+}
+
+// With date inputs - Arabic RTL
+const WithDateInputsArabicExample = () => {
+  const [value, setValue] = useState<DateRange>({ startDate: null, endDate: null })
+
+  return (
+    <CacheProvider value={rtlCache}>
+      <ThemeProvider theme={rtlTheme}>
+        <CssBaseline />
+        <Box sx={{ p: 4, minWidth: 400, direction: 'rtl' }}>
+          <DateRangePicker
+            value={value}
+            onChange={setValue}
+            locale={arSALocale}
+            label={arSALocale.strings.selectRange}
+            showDateInputs={true}
+            dateFormat="dd/MM/yyyy"
+          />
+        </Box>
+      </ThemeProvider>
+    </CacheProvider>
+  )
+}
+
+export const WithDateInputsArabic: Story = {
+  render: () => <WithDateInputsArabicExample />,
+  decorators: [],
+}
+
+// Drawer with date inputs
+export const DrawerWithDateInputs: Story = {
+  args: {
+    label: 'Drawer + Date Inputs',
+    variant: 'drawer',
+    showDateInputs: true,
+    dateFormat: 'MM/dd/yyyy',
+    locale: enUSLocale,
+  },
+}

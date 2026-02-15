@@ -249,6 +249,8 @@ export interface DateRangePickerProps {
   showActionButtons?: boolean
   /** Show month/year quick jumper dropdowns in calendar header */
   showQuickJumper?: boolean
+  /** Show manual date input fields above calendars */
+  showDateInputs?: boolean
   /** Auto apply selection without requiring Apply button click */
   autoApply?: boolean
   /** Callback when picker opens */
