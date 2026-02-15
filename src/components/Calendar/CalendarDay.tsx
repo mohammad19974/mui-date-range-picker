@@ -8,6 +8,8 @@ export interface CalendarDayProps extends DayState {
   onMouseEnter: (date: Date) => void
   onKeyDown?: (event: React.KeyboardEvent, date: Date) => void
   tabIndex?: number
+  /** Size of the day cell (default: 36) */
+  size?: number
 }
 
 export const CalendarDay = memo(function CalendarDay({
@@ -24,6 +26,7 @@ export const CalendarDay = memo(function CalendarDay({
   onMouseEnter,
   onKeyDown,
   tabIndex = -1,
+  size = 36,
 }: CalendarDayProps) {
   const theme = useTheme()
 
@@ -93,8 +96,8 @@ export const CalendarDay = memo(function CalendarDay({
     <div
       style={{
         position: 'relative',
-        width: 36,
-        height: 36,
+        width: size,
+        height: size,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -112,12 +115,13 @@ export const CalendarDay = memo(function CalendarDay({
         disabled={isDisabled}
         tabIndex={tabIndex}
         sx={{
-          width: 36,
-          height: 36,
+          width: size,
+          height: size,
           borderRadius: getBorderRadius(),
           backgroundColor: getBackgroundColor(),
           color: getTextColor(),
           fontWeight: isToday ? 700 : 400,
+          fontSize: size >= 44 ? '0.95rem' : '0.875rem',
           transition: theme.transitions.create(['background-color', 'color'], {
             duration: theme.transitions.duration.short,
           }),
@@ -148,6 +152,7 @@ export const CalendarDay = memo(function CalendarDay({
           sx={{
             lineHeight: 1,
             fontWeight: 'inherit',
+            fontSize: 'inherit',
           }}
         >
           {format(date, 'd')}

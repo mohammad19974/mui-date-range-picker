@@ -54,4 +54,5 @@ export type {
   DayRenderProps,
   HeaderRenderProps,
   DateRangePickerContextValue,
+  MobileOptions,
 } from './types'

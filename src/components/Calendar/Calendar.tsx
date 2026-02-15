@@ -39,6 +39,10 @@ export interface CalendarProps {
   showQuickJumper?: boolean
   /** Custom day renderer */
   renderDay?: (props: DayState & { onClick: () => void }) => React.ReactNode
+  /** Whether this is rendered in mobile view */
+  isMobile?: boolean
+  /** Use touch-friendly sizing */
+  touchFriendly?: boolean
 }
 
 export const Calendar = memo(function Calendar({
@@ -58,9 +62,16 @@ export const Calendar = memo(function Calendar({
   locale,
   showQuickJumper = true,
   renderDay,
+  isMobile = false,
+  touchFriendly = false,
 }: CalendarProps) {
   const theme = useTheme()
   const isRtl = locale.direction === 'rtl'
+
+  // Calculate responsive dimensions
+  const daySize = isMobile && touchFriendly ? 44 : 36
+  const calendarWidth = isMobile ? '100%' : 280
+  const minCalendarWidth = isMobile ? 280 : 280
 
   // Month state
   const [internalMonth, setInternalMonth] = useState(() => startOfMonth(defaultMonth))
@@ -141,8 +152,11 @@ export const Calendar = memo(function Calendar({
   return (
     <Box
       sx={{
-        width: 280,
+        width: calendarWidth,
+        minWidth: minCalendarWidth,
+        maxWidth: isMobile ? 400 : 280,
         direction: locale.direction,
+        mx: isMobile ? 'auto' : 0,
       }}
       role="grid"
       aria-label="Calendar"
@@ -179,7 +193,7 @@ export const Calendar = memo(function Calendar({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              height: 36,
+              height: daySize,
             }}
             role="columnheader"
           >
@@ -189,7 +203,7 @@ export const Calendar = memo(function Calendar({
                 color: theme.palette.text.secondary,
                 fontWeight: 500,
                 textTransform: 'uppercase',
-                fontSize: '0.7rem',
+                fontSize: isMobile && touchFriendly ? '0.75rem' : '0.7rem',
               }}
             >
               {day}
@@ -217,7 +231,7 @@ export const Calendar = memo(function Calendar({
               <Box
                 sx={{
                   width: 32,
-                  height: 36,
+                  height: daySize,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -256,6 +270,7 @@ export const Calendar = memo(function Calendar({
                   {...dayState}
                   onClick={handleDateClick}
                   onMouseEnter={handleDateHover}
+                  size={daySize}
                 />
               )
             })}
