@@ -10,6 +10,8 @@ export interface CalendarDayProps extends DayState {
   tabIndex?: number
   /** Size of the day cell (default: 36) */
   size?: number
+  /** Whether the layout is right-to-left */
+  isRtl?: boolean
 }
 
 export const CalendarDay = memo(function CalendarDay({
@@ -27,6 +29,7 @@ export const CalendarDay = memo(function CalendarDay({
   onKeyDown,
   tabIndex = -1,
   size = 36,
+  isRtl = false,
 }: CalendarDayProps) {
   const theme = useTheme()
 
@@ -81,10 +84,12 @@ export const CalendarDay = memo(function CalendarDay({
       return '50%'
     }
     if (isRangeStart) {
-      return '50% 0 0 50%'
+      // In LTR: round left side, flat right. In RTL: round right side, flat left.
+      return isRtl ? '0 50% 50% 0' : '50% 0 0 50%'
     }
     if (isRangeEnd) {
-      return '0 50% 50% 0'
+      // In LTR: flat left, round right. In RTL: flat right, round left.
+      return isRtl ? '50% 0 0 50%' : '0 50% 50% 0'
     }
     if (isInRange) {
       return 0
