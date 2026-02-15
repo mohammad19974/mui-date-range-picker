@@ -121,7 +121,7 @@ export const CalendarHeader = memo(function CalendarHeader({
         onClick={handlePrevClick}
         disabled={isPrevDisabled}
         size="small"
-        aria-label={isRtl ? 'Next month' : 'Previous month'}
+        aria-label={isRtl ? locale.strings.nextMonth : locale.strings.previousMonth}
         sx={{
           color: theme.palette.text.secondary,
           '&:hover': {
@@ -208,7 +208,7 @@ export const CalendarHeader = memo(function CalendarHeader({
         onClick={handleNextClick}
         disabled={isNextDisabled}
         size="small"
-        aria-label={isRtl ? 'Previous month' : 'Next month'}
+        aria-label={isRtl ? locale.strings.previousMonth : locale.strings.nextMonth}
         sx={{
           color: theme.palette.text.secondary,
           '&:hover': {
@@ -226,7 +226,7 @@ export const CalendarHeader = memo(function CalendarHeader({
         onClose={handleCloseMonthMenu}
         MenuListProps={{
           role: 'listbox',
-          'aria-label': 'Select month',
+          'aria-label': locale.strings.selectMonth,
         }}
         slotProps={{
           paper: {
@@ -254,7 +254,7 @@ export const CalendarHeader = memo(function CalendarHeader({
         onClose={handleCloseYearMenu}
         MenuListProps={{
           role: 'listbox',
-          'aria-label': 'Select year',
+          'aria-label': locale.strings.selectYear,
         }}
         slotProps={{
           paper: {

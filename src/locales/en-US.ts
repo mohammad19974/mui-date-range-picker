@@ -14,6 +14,12 @@ export const enUSLocale: DateRangePickerLocale = {
     clear: 'Clear',
     apply: 'Apply',
     cancel: 'Cancel',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    selectMonth: 'Select month',
+    selectYear: 'Select year',
+    presets: 'Date range presets',
+    swipeHint: 'Swipe to change month',
     weekdays: {
       short: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
       long: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],

@@ -309,7 +309,7 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
               backgroundColor: 'action.hover',
             }}
           >
-            ← Swipe to change month →
+            {locale.strings.swipeHint}
           </Typography>
         )}
 
@@ -386,8 +386,8 @@ export const DateRangePickerPopover = memo(function DateRangePickerPopover({
           </>
         )}
 
-        {/* Action buttons - only show in non-dialog mode or when not on mobile with fullscreen */}
-        {showActionButtons && !(isMobile && mobileOptions.fullScreen && (variant === 'modal' || variant === 'popover')) && (
+        {/* Action buttons - hide for drawer (has its own footer) and mobile fullscreen modal/popover */}
+        {showActionButtons && variant !== 'drawer' && !(isMobile && mobileOptions.fullScreen && (variant === 'modal' || variant === 'popover')) && (
           <>
             <Divider />
             <Box

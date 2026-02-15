@@ -14,6 +14,12 @@ export const arSALocale: DateRangePickerLocale = {
     clear: 'مسح',
     apply: 'تطبيق',
     cancel: 'إلغاء',
+    previousMonth: 'الشهر السابق',
+    nextMonth: 'الشهر التالي',
+    selectMonth: 'اختر الشهر',
+    selectYear: 'اختر السنة',
+    presets: 'نطاقات التاريخ المحددة مسبقاً',
+    swipeHint: 'اسحب لتغيير الشهر',
     weekdays: {
       short: ['أحد', 'اثن', 'ثلا', 'أرب', 'خمي', 'جمع', 'سبت'],
       long: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],

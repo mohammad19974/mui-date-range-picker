@@ -44,6 +44,7 @@ export const DateRangePicker = memo(function DateRangePicker({
   showTodayButton = true,
   showClearButton = true,
   showActionButtons = true,
+  showQuickJumper = true,
   autoApply = false,
   onOpen,
   onClose,
@@ -189,6 +190,7 @@ export const DateRangePicker = memo(function DateRangePicker({
           weekStartsOn={weekStartsOn}
           locale={locale}
           closeOnSelect={closeOnSelect}
+          showQuickJumper={showQuickJumper}
           autoApply={autoApply}
           mobileOptions={mobileOptions}
         />
